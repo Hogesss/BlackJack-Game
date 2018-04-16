@@ -1,0 +1,233 @@
+/*Source file for creating a LinkedList.
+
+	LinkedList.template
+	
+	*Author: Benjamin Hogan
+	*Student No: c3256846
+	*Date: 28/9/2016
+	*Descripion:
+	*	Creates and manipulates a LinkedList.
+*/
+
+#include <string>
+#include <iostream>
+#include "LinkedList.h"
+
+using namespace std;
+namespace ben_h
+
+{
+	template <typename value_type>
+	LinkedList<value_type>::LinkedList()
+	{
+		head = NULL;
+		tail = NULL; //pointers are NULL and length 0.
+		current = NULL;
+		length = 0;
+	}
+	
+	template <typename value_type>
+	LinkedList<value_type>::~LinkedList()
+	{
+		size_t y;
+		for(y = size(); y>0; y--) //loops through and calls removeFromTail to delete each card.
+		{
+			removeFromTail();
+		}
+		head = NULL;// sets pointers to NULL.
+		tail = NULL;
+		current = NULL;
+	}
+	
+	template <typename value_type>
+	LinkedList<value_type>::LinkedList(const value_type initial_data)
+	{
+		head = new Node<value_type>(initial_data); //Initialises a new node to the head of the list.
+		tail = head;
+		current = head;
+		length=1;
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::addToHead(const value_type data)
+	{
+		if (length == 0) // if empty then it will initialise a new node with pointers
+		{
+			head = new Node<value_type>(data);
+			tail = head;
+			current = head;
+			length=1;
+		}
+		else
+		{
+			Node<value_type>* head_insert = new Node<value_type>(data);
+			//sets the head node to the new node and links to the next node.
+			head->set_prev(head_insert);
+			head_insert->set_next(head);
+			head = head_insert;
+			length++;
+			head_insert = NULL;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::addToTail(const value_type data)
+	{
+		if (length == 0) // if empty then it will initialise a new node with pointers
+		{
+			head = new Node<value_type>(data);
+			tail = head;
+			current = tail;
+			length=1;
+		}
+		
+		else
+		{
+			Node<value_type>* tail_insert = new Node<value_type>(data);
+			//sets the tail node to the new node and links to the previous node.
+			tail->set_next(tail_insert);
+			tail_insert->set_prev(tail);
+			tail = tail_insert;
+			length++;
+			tail_insert = NULL;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::addToCurrent(const value_type data)
+	{
+		if (length == 0) // if empty then it will initialise a new node with pointers
+		{
+			head = new Node<value_type>(data);
+			tail = head;
+			current = tail;
+			length=1;
+		}
+		
+		else
+		{
+			Node<value_type>* current_insert = new Node<value_type>(data);
+			//sets the current node to the new node and links to the next and previous nodes.
+			current_insert->set_next(current);
+			current->get_prev()->set_next(current_insert);
+			current_insert->set_prev(current->get_prev());
+			current->set_prev(current_insert);
+			current_insert = current;
+			current = current_insert;// sets new current pointer
+			length++;
+			current_insert = NULL;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::removeFromHead()
+	{
+		if (length == 0)// if empty then it will return doing nothing.
+			return;
+		
+		else 
+		{
+			Node<value_type>* temp = head;
+			// sets temp pointer to head then sets head to next pointer and deletes
+			// what temp was pointing at.
+			head = temp->get_next();
+			delete temp;
+			length--;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::removeFromTail()
+	{
+		if (length == 0) // if empty then it will return doing nothing.
+			return;
+		
+		else 
+		{
+			// sets temp pointer to tail then sets tail to prev pointer and deletes
+			// what temp was pointing at.
+			Node<value_type>* temp = tail;
+			tail = temp->get_prev();
+			delete temp;
+			length--;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::removeFromCurrent()
+	{
+		if (length == 0) // if empty then it will return doing nothing.
+			return;
+		
+		else 
+		{
+			Node<value_type>* temp = current;
+			// sets the temp pointer to current then sets current's next and previous together
+			// and deletes what temp was pointing at.
+			current = temp->get_next();
+			temp->get_prev()->set_next(current);
+			current->set_prev(temp->get_prev());
+			delete temp;
+			length--;
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::moveToCurrent(int x)
+	{
+		//If head is not null, go to head
+		moveToHead();
+		for (int i=0; i<x; i++)
+		{
+		  current = current->get_next();
+		}
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::setCurrentData(const value_type& data)
+	{
+		current->set_data(data);
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::forward()
+	{
+		current = current->get_next();
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::back()
+	{
+		current = current->get_prev();
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::moveToHead()
+	{
+		current = head;
+	}
+	
+	template <typename value_type>
+	void LinkedList<value_type>::moveToTail()
+	{
+		current = tail;
+	}
+	
+	template <typename value_type>
+	value_type& LinkedList<value_type>::getCurrent()
+	{
+		return current->get_data();
+	}
+	
+	template <typename value_type>
+	const value_type& LinkedList<value_type>::getCurrent() const
+	{
+		return current->get_data();
+	}
+	
+	template <typename value_type>
+	const size_t LinkedList<value_type>::size()
+	{
+		return length;
+	}
+}

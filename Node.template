@@ -1,0 +1,95 @@
+/*Source file for creating and manipulating Nodes.
+
+	Node.template
+	
+	*Author: Benjamin Hogan
+	*Student No: c3256846
+	*Date: 28/9/2016
+	*Descripion:
+	*	Creates and manipulates Nodes in Linked Lists.
+*/
+
+#include <string>
+#include "Node.h"
+
+using namespace std;
+namespace ben_h
+{
+    template <typename value_type>
+	Node<value_type>::Node()
+	{
+		//data is set to an empty string.
+		next = NULL;
+		prev = NULL;
+	}
+	
+	template <typename value_type>
+	Node<value_type>::~Node()
+	{
+		next = NULL;
+		prev = NULL;
+	}
+	
+	template <typename value_type>
+	Node<value_type>::Node(const value_type initial_data)
+	{
+		data = initial_data; //sets data to the initial data instead of empty.
+		next = NULL;
+		prev = NULL;
+	}	
+	
+	template <typename value_type>
+	void Node<value_type>::set_data(const value_type& new_data)
+	{
+		data = new_data;
+	}
+	
+	template <typename value_type>
+	void Node<value_type>::set_next(Node* new_link)
+	{
+		next = new_link;
+	}
+	
+	template <typename value_type>
+	void Node<value_type>::set_prev(Node* new_link)
+	{
+		prev = new_link;
+	}
+	
+	template <typename value_type>
+	value_type& Node<value_type>::get_data()
+	{
+		return data;
+	}
+	
+	template <typename value_type>
+	const value_type& Node<value_type>::get_data() const
+	{
+		return data;
+	}
+	
+	template <typename value_type>
+	Node<value_type>* Node<value_type>::get_next()
+	{
+		return next;
+	}
+	
+	template <typename value_type>
+	const Node<value_type>* Node<value_type>::get_next() const
+	{
+		return next;
+	}
+	
+	template <typename value_type>
+	Node<value_type>* Node<value_type>::get_prev()
+	{
+		return prev;
+	}
+	
+	template <typename value_type>
+	const Node<value_type>* Node<value_type>::get_prev() const
+	{
+		return prev;
+	}
+	
+}
